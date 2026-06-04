@@ -1,0 +1,23 @@
+{
+  "standard_end_count": 10,
+  "five_rock_rule": true,
+  "no_tick_rule": false,
+  "thinking_time_sec": 219.0,
+  "extra_end_thinking_time_sec": 21.9,
+  "first_hammer": 1,
+  "max_speed": 4.0,
+  "cpu_difficulty": 1,
+  "human_team": 0,
+  "team0_players": [
+    {"stddev_speed": 0.0076, "stddev_angle": 0.0018, "seed": -1},
+    {"stddev_speed": 0.0076, "stddev_angle": 0.0018, "seed": -1},
+    {"stddev_speed": 0.0076, "stddev_angle": 0.0018, "seed": -1},
+    {"stddev_speed": 0.0076, "stddev_angle": 0.0018, "seed": -1}
+  ],
+  "team1_players": [
+    {"stddev_speed": 0.0076, "stddev_angle": 0.0018, "seed": -1},
+    {"stddev_speed": 0.0076, "stddev_angle": 0.0018, "seed": -1},
+    {"stddev_speed": 0.0076, "stddev_angle": 0.0018, "seed": -1},
+    {"stddev_speed": 0.0076, "stddev_angle": 0.0018, "seed": -1}
+  ]
+}

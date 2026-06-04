@@ -1,0 +1,21 @@
+{
+    "name": "Curling.Match",
+    "rootNamespace": "Curling.Match",
+    "references": [
+        "Curling.Core",
+        "Curling.Physics",
+        "Curling.Rules",
+        "Curling.AI",
+        "Curling.Input",
+        "Curling.Serialization"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Curling.Rules",
+    "rootNamespace": "Curling.Rules",
+    "references": [
+        "Curling.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

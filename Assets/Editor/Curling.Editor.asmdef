@@ -1,0 +1,21 @@
+{
+    "name": "Curling.Editor",
+    "rootNamespace": "Curling.EditorTools",
+    "references": [
+        "Curling.Core",
+        "Curling.Physics",
+        "Curling.Input",
+        "Curling.Match"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

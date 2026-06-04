@@ -1,0 +1,27 @@
+{
+    "name": "Curling.Tests.EditMode",
+    "rootNamespace": "Curling.Tests.EditMode",
+    "references": [
+        "Curling.Core",
+        "Curling.Rules",
+        "Curling.Input",
+        "Curling.Physics",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

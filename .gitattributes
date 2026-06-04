@@ -1,0 +1,13 @@
+* text=auto
+
+*.cs text diff=csharp
+*.json text
+*.md text
+*.asmdef text
+*.asset text
+*.meta text
+*.prefab text
+*.unity text
+*.mat text
+*.controller text
+*.anim text
