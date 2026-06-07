@@ -139,7 +139,7 @@ namespace Curling.Match
             ApplyEndStateToBodies(afterPhysics);
             Debug.Log($"[Curling] {thrower} shoots slot={slot} v=({shot.velocity.x:F2},{shot.velocity.y:F2}) ω={shot.angular_velocity:F2} from {spawn}");
             Debug.Log($"[Curling] Simulation launch slot={slot} pos=({thrownStone.position.x:F2},{thrownStone.position.y:F2}) speed={thrownStone.linear_velocity.Magnitude:F3} w={thrownStone.angular_velocity:F2}");
-            CameraFollow.SetTarget(body.transform);
+            CameraFollow.SetShotTarget(body.transform);
 
             _skipRequested = false;
             _physicsInProgress = true;
@@ -244,7 +244,7 @@ namespace Curling.Match
             body.team = t;
             body.stoneIndex = slot;
             body.Stage(SpawnPosition());
-            CameraFollow.SetTarget(body.transform);
+            CameraFollow.SetTarget(body.transform, true);
         }
 
         Vector3 SpawnPosition()

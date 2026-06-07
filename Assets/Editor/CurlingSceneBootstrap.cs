@@ -225,6 +225,20 @@ namespace Curling.EditorTools
             mainFollow.mode = Curling.Match.CameraFollow.FollowMode.OverheadCenterline;
             mainFollow.overheadHeight = 10f;
             mainFollow.smooth = 5f;
+            mainFollow.trackShotBeforeOverhead = true;
+            mainFollow.overheadSwitchZ = CCore.HogLineY;
+            mainFollow.shotTrackOffset = new Vector3(0f, 1.35f, -2.6f);
+            mainFollow.shotTrackLookAhead = 2.6f;
+            mainFollow.shotTrackLookHeight = 0.18f;
+            mainFollow.shotTrackFieldOfView = 60f;
+            mainFollow.shotTrackNearClip = 0.03f;
+            mainFollow.useHumanAimDuringSetup = true;
+            mainFollow.humanAimEyeHeight = 1.22f;
+            mainFollow.humanAimBehindStone = 2.05f;
+            mainFollow.humanAimFocusDistance = 3.5f;
+            mainFollow.humanAimLookHeight = 0.18f;
+            mainFollow.humanAimFieldOfView = 58f;
+            mainFollow.humanAimNearClip = 0.03f;
 
             // PiP 右上: 斜め俯瞰 (Oblique)
             var camPipOblique = new GameObject("Camera2_PiP_Oblique");
