@@ -322,7 +322,7 @@ namespace Curling.EditorTools
             input.previewOrigin = spawn.transform;
 
             var autoStart = go.AddComponent<MatchAutoStart>();
-            autoStart.difficultyOverride = CpuDifficulty.Easy;
+            autoStart.difficultyOverride = CpuDifficulty.Hard;
             autoStart.endCountOverride = 2;
             go.AddComponent<MultiDisplayActivator>();
         }

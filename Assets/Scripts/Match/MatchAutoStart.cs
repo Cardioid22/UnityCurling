@@ -8,7 +8,7 @@ namespace Curling.Match
     public class MatchAutoStart : MonoBehaviour
     {
         public bool useDefaultSettings = true;
-        public CpuDifficulty difficultyOverride = CpuDifficulty.Easy;
+        public CpuDifficulty difficultyOverride = CpuDifficulty.Hard;
         public byte endCountOverride = 2;
 
         void Start()
