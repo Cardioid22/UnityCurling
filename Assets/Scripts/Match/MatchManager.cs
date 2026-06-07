@@ -24,12 +24,16 @@ namespace Curling.Match
         public KeyCode skipKey = KeyCode.S;
         public float fastForwardScale = 4f;
 
+        [Header("Interrupt")]
+        public KeyCode interruptKey = KeyCode.Escape;
+
         MatchState _state;
         RuleEngine _rules;
         IShotDecider _cpu;
         CancellationTokenSource _cts;
         bool _physicsInProgress;
         bool _skipRequested;
+        bool _interrupted;
 
         [Header("Commentary (Ollama + VOICEVOX)")]
         public CommentaryService commentary;
@@ -50,6 +54,19 @@ namespace Curling.Match
 
         void Update()
         {
+            if (UnityEngine.Input.GetKeyDown(interruptKey))
+            {
+                if (_interrupted) QuitGame();
+                else InterruptGame();
+                return;
+            }
+
+            if (_interrupted)
+            {
+                Time.timeScale = 0f;
+                return;
+            }
+
             bool ff = UnityEngine.Input.GetKey(fastForwardKey) || UnityEngine.Input.GetKey(KeyCode.RightShift);
             Time.timeScale = ff ? fastForwardScale : 1f;
             if (_physicsInProgress && UnityEngine.Input.GetKeyDown(skipKey))
@@ -65,6 +82,12 @@ namespace Curling.Match
 
         void OnGUI()
         {
+            if (_interrupted)
+            {
+                DrawInterruptedOverlay();
+                return;
+            }
+
             var box = new GUIStyle(GUI.skin.box) { fontSize = 12, alignment = TextAnchor.UpperLeft };
             string ffState = (Time.timeScale > 1.01f) ? $"<color=#7fff7f>{Time.timeScale:F1}x</color>" : "1.0x";
             string txt =
@@ -74,8 +97,57 @@ namespace Curling.Match
             GUI.Box(new Rect(12, Screen.height - 80, 360, 68), txt, box);
         }
 
+        void DrawInterruptedOverlay()
+        {
+            var title = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 28,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter
+            };
+            var body = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 16,
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            float w = 360f;
+            float h = 130f;
+            var rect = new Rect((Screen.width - w) * 0.5f, (Screen.height - h) * 0.5f, w, h);
+            GUI.Box(rect, string.Empty);
+            GUI.Label(new Rect(rect.x + 12f, rect.y + 24f, rect.width - 24f, 38f), "Game interrupted", title);
+            GUI.Label(new Rect(rect.x + 12f, rect.y + 70f, rect.width - 24f, 32f), "Press Esc again to quit.", body);
+        }
+
+        public void InterruptGame()
+        {
+            if (_interrupted) return;
+
+            _interrupted = true;
+            _physicsInProgress = false;
+            _skipRequested = false;
+            _cts?.Cancel();
+            if (humanInput != null) humanInput.SetHumanTurn(false);
+            StopAllCoroutines();
+            Time.timeScale = 0f;
+            Debug.Log("[Curling] Match interrupted by Escape.");
+        }
+
+        public void QuitGame()
+        {
+            Time.timeScale = 1f;
+            Debug.Log("[Curling] Quitting after second Escape.");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
+
         public void StartNewMatch(MatchSettings settings)
         {
+            _interrupted = false;
+            Time.timeScale = 1f;
             _state = new MatchState(settings);
             _rules = new RuleEngine(settings);
             _cpu = new HeuristicAI(settings.cpu_difficulty);
