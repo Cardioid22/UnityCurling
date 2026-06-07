@@ -31,11 +31,21 @@ namespace Curling.Match
         bool _physicsInProgress;
         bool _skipRequested;
 
+        [Header("Commentary (Ollama + VOICEVOX)")]
+        public CommentaryService commentary;
+
         public MatchState State => _state;
 
         void Awake()
         {
             UnityEngine.Physics.gravity = new Vector3(0f, -CCore.Gravity, 0f);
+            EnsureCommentary();
+        }
+
+        void EnsureCommentary()
+        {
+            if (commentary == null) commentary = GetComponent<CommentaryService>();
+            if (commentary == null) commentary = gameObject.AddComponent<CommentaryService>();
         }
 
         void Update()
@@ -199,6 +209,16 @@ namespace Curling.Match
             _state.current_end = result.resultingEnd;
             ApplyEndStateToBodies(_state.current_end);
 
+            var shotInfo = new ShotInfo
+            {
+                thrower = thrower,
+                endComplete = result.endComplete,
+                endScore = result.endScore,
+                endScorer = result.endScorer,
+            };
+            // 毎ショット後の実況（非ブロッキング。盤面は呼び出し時点で文字列化される）。
+            commentary?.Comment(_state, shotInfo);
+
             if (result.endComplete)
             {
                 int t0 = result.endScorer == Team.Team0 ? result.endScore : 0;
@@ -210,6 +230,8 @@ namespace Curling.Match
                 {
                     _state.winner = _rules.DetermineWinner(_state.score, endsPlayed);
                     _state.phase = MatchPhase.Finished;
+                    // 勝敗確定の実況で上書き（force=true で進行中の実況を中断）。
+                    commentary?.Comment(_state, shotInfo, force: true);
                     yield break;
                 }
 
@@ -302,6 +324,7 @@ namespace Curling.Match
             _state.conceded = true;
             _state.winner = t.Opponent();
             _state.phase = MatchPhase.Finished;
+            commentary?.Comment(_state, new ShotInfo { thrower = t }, force: true);
         }
     }
 }

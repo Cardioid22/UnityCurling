@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+
+  "ollamaUrl": "http://localhost:11434",
+  "ollamaModel": "gemma4",
+  "temperature": 0.7,
+  "numPredict": 64,
+  "keepAlive": "30m",
+
+  "voicevoxUrl": "http://localhost:50021",
+  "voicevoxFallbackUrl": "",
+  "voicevoxSpeaker": 3,
+
+  "maxChars": 30,
+  "warmupOnStart": true,
+  "requestTimeoutSec": 15
+}
