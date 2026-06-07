@@ -420,15 +420,16 @@ namespace Curling.EditorTools
             BuildStands(arena.transform, false);
 
             // 9. 天井照明 (吊り下げ風)
+            const float lampY = 11.5f;
+            const float wireY = 12.5f;
             for (int i = 0; i < 5; i++)
             {
                 float zPos = (i + 1) * (sheetLen / 6f);
-                AddBox(arena.transform, $"CeilingLamp_{i}", new Vector3(0f, 7.5f, zPos),
+                AddBox(arena.transform, $"CeilingLamp_{i}", new Vector3(0f, lampY, zPos),
                     new Vector3(2.2f, 0.18f, 0.7f), new Color(0.96f, 0.95f, 0.78f));
-                // 吊り棒
-                AddBox(arena.transform, $"LampWire_{i}_L", new Vector3(-0.9f, 8.5f, zPos),
+                AddBox(arena.transform, $"LampWire_{i}_L", new Vector3(-0.9f, wireY, zPos),
                     new Vector3(0.04f, 2f, 0.04f), new Color(0.2f, 0.2f, 0.22f));
-                AddBox(arena.transform, $"LampWire_{i}_R", new Vector3(0.9f, 8.5f, zPos),
+                AddBox(arena.transform, $"LampWire_{i}_R", new Vector3(0.9f, wireY, zPos),
                     new Vector3(0.04f, 2f, 0.04f), new Color(0.2f, 0.2f, 0.22f));
             }
         }
