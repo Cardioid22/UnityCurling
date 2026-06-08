@@ -19,6 +19,10 @@ namespace Curling.Match
         public float postSettleHoldSeconds = 1f;
         public float shotTimeoutSeconds = 90f;
 
+        [Header("CPU Timing")]
+        public float cpuDecisionTimeoutSeconds = 5f;
+        public float minimumCpuThinkSeconds = 1.5f;
+
         [Header("Animation Skip")]
         public KeyCode fastForwardKey = KeyCode.LeftShift;
         public KeyCode skipKey = KeyCode.S;
@@ -184,12 +188,29 @@ namespace Curling.Match
                 else
                 {
                     if (humanInput != null) humanInput.SetHumanTurn(false);
-                    _cts = new CancellationTokenSource(Mathf.RoundToInt(_state.settings.thinking_time_sec * 1000f));
+                    float decisionTimeout = Mathf.Max(0.1f, Mathf.Min(_state.settings.thinking_time_sec, cpuDecisionTimeoutSeconds));
+                    _cts = new CancellationTokenSource(Mathf.CeilToInt(decisionTimeout * 1000f));
                     var task = _cpu.DecideAsync(_state, next, _cts.Token);
                     float t0 = Time.realtimeSinceStartup;
-                    while (!task.IsCompleted) yield return null;
-                    while (Time.realtimeSinceStartup - t0 < 1.5f) yield return null;
-                    shot = task.Result;
+                    while (!task.IsCompleted && Time.realtimeSinceStartup - t0 < decisionTimeout) yield return null;
+
+                    if (!task.IsCompleted)
+                    {
+                        _cts.Cancel();
+                        shot = BuildCpuTimeoutFallbackShot();
+                        Debug.LogWarning($"[Curling] CPU decision exceeded {decisionTimeout:F1}s. Using fallback shot.");
+                    }
+                    else if (task.IsFaulted || task.IsCanceled)
+                    {
+                        shot = BuildCpuTimeoutFallbackShot();
+                        Debug.LogWarning($"[Curling] CPU decision failed. Using fallback shot. status={task.Status}");
+                    }
+                    else
+                    {
+                        float minimumThink = Mathf.Min(minimumCpuThinkSeconds, decisionTimeout);
+                        while (Time.realtimeSinceStartup - t0 < minimumThink) yield return null;
+                        shot = task.Result;
+                    }
                 }
 
                 yield return StartCoroutine(PerformShot(next, shot));
@@ -346,6 +367,15 @@ namespace Curling.Match
             return stoneSpawnPoint != null
                 ? stoneSpawnPoint.position
                 : new Vector3(0f, 0f, CCore.HogLineY - 12f);
+        }
+
+        ShotInput BuildCpuTimeoutFallbackShot()
+        {
+            const float speed = 2.71f;
+            const float angleDeg = 69f;
+            float angle = angleDeg * Mathf.Deg2Rad;
+            var velocity = new Vec2(Mathf.Cos(angle) * speed, Mathf.Sin(angle) * speed);
+            return new ShotInput(velocity, -1.57f);
         }
 
         static bool AnyMovingStone(EndState end)
