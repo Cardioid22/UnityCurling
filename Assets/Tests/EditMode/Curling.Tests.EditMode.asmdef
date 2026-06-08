@@ -3,6 +3,7 @@
     "rootNamespace": "Curling.Tests.EditMode",
     "references": [
         "Curling.Core",
+        "Curling.AI",
         "Curling.Rules",
         "Curling.Input",
         "Curling.Physics",
