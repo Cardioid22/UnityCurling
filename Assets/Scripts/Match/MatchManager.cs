@@ -44,16 +44,27 @@ namespace Curling.Match
 
         public MatchState State => _state;
 
+        [Header("Scoreboard (3D 掲示板表示)")]
+        public ScoreboardDisplay scoreboard;
+
         void Awake()
         {
             UnityEngine.Physics.gravity = new Vector3(0f, -CCore.Gravity, 0f);
             EnsureCommentary();
+            EnsureScoreboard();
         }
 
         void EnsureCommentary()
         {
             if (commentary == null) commentary = GetComponent<CommentaryService>();
             if (commentary == null) commentary = gameObject.AddComponent<CommentaryService>();
+        }
+
+        void EnsureScoreboard()
+        {
+            if (scoreboard == null) scoreboard = GetComponent<ScoreboardDisplay>();
+            if (scoreboard == null) scoreboard = gameObject.AddComponent<ScoreboardDisplay>();
+            scoreboard.manager = this;
         }
 
         void Update()
