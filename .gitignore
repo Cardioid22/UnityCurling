@@ -39,3 +39,6 @@ Thumbs.db
 # Local test/build outputs
 TestResults/
 test-results/
+
+# Local player build output (Unity standalone build)
+LabGames/
